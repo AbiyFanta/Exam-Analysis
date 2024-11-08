@@ -36,12 +36,12 @@ def analyze_exam_data(file_path):
     # Count missed exams per year and per exam
     missed_exams_count = missed_exams.groupby(['year', 'exam_name']).size().rename("Missed Exams Count")
 
-    # Determine passed and failed exams for valid exams only
+    # Determine passed and failed exams based on each unique pass point
     valid_exams['passed'] = valid_exams['result_percentage'] >= valid_exams['pass_point_percentage']
     valid_exams['failed'] = valid_exams['result_percentage'] < valid_exams['pass_point_percentage']
 
-    # Group by year and exam_name to calculate statistics
-    yearly_exam_stats = valid_exams.groupby(['year', 'exam_name']).agg(
+    # Group by year, exam name, and pass point percentage to calculate statistics
+    yearly_exam_stats = valid_exams.groupby(['year', 'exam_name', 'pass_point_percentage']).agg(
         total_exams=('result_percentage', 'size'),
         passed_exams=('passed', 'sum'),
         failed_exams=('failed', 'sum'),
@@ -49,11 +49,12 @@ def analyze_exam_data(file_path):
         avg_score=('result_percentage', 'mean')
     )
 
-    # Calculate pass and fail rates
+    # Calculate pass and fail rates for each unique pass point
     yearly_exam_stats['Pass Rate (%)'] = (yearly_exam_stats['passed_exams'] / yearly_exam_stats['total_exams']) * 100
     yearly_exam_stats['Fail Rate (%)'] = (yearly_exam_stats['failed_exams'] / yearly_exam_stats['total_exams']) * 100
 
-    # Add missed exams count to the yearly stats by joining on year and exam_name
+    # Add missed exams count per year and exam
+    missed_exams_count_by_year = missed_exams.groupby(['year', 'exam_name']).size()
     yearly_exam_stats = yearly_exam_stats.join(missed_exams_count, how='left').fillna(0)
 
     # Limit decimal places to 2 for each numeric column
@@ -70,8 +71,8 @@ def analyze_exam_data(file_path):
     }, inplace=True)
 
     # Save the results to an Excel file
-    output_file_path = "exam_analysis_results.xlsx"
-    output_df.to_excel(output_file_path, index_label=["Year", "Exam Name"])
+    output_file_path = "exam_analysis_results_with_separate_pass_rates.xlsx"
+    output_df.to_excel(output_file_path, index_label=["Year", "Exam Name", "Pass Point Percentage"])
 
     messagebox.showinfo("Success", f"Analysis complete! Output saved to {output_file_path}")
 
