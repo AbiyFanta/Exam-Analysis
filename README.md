@@ -4,11 +4,7 @@ ___
 ## Description
  It takes in an excel sheet containing data related to examination results and grading.
 
- It outputs another excel sheet that compiles this data in fewer cells with data such as:
- - Year Taken
- - Total Exams Taken/Missed
- - Pass/Fail Rate
- - Average Score
+ It outputs another excel sheet that maps the pass-rate based on the examination, pass point, and month/year taken.
 
 ## Features
 Used TKinter to make a very simple UI. Opens a window with a single button prompting to select an excel file.
