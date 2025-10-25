@@ -18,5 +18,6 @@ pyinstaller --onefile --windowed exam_analysis_tool.py
 ```
 - This will search for the .py file and generate a .exe file within the dist folder for you to directly run.
 
-## Contributions
+## Acknowledgements
 - pandas library ~ https://pandas.pydata.org/
+- Made on behalf of the **Contractor State License Board**
