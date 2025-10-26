@@ -2,7 +2,6 @@
 Author: Abiy Fanta
 Date: 2024-11-06
 File name: exam_analysis_tool.py
-IDE: PyCharm - Python 3.12
 
 Description: A Python script to analyze exam data from an Excel file and calculate pass statistics
              for each exam type, grouped by months in chronological order, including exam names
